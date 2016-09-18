@@ -16,6 +16,6 @@ io.on('connection', function(socket){
 		socket.emit('boopeeeee');
 	});
 })
-
-   http.listen(process.env.PORT || 5000);
+io.attach(.env.PORT || 5000);
+   //http.listen(process.env.PORT || 5000);
 
