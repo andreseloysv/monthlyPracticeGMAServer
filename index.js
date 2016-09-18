@@ -1,18 +1,25 @@
-var port=process.env.PORT || 3000;
-var http=require('http');
-var app=http.createServer(function(req,res){
-    res.write("server listening to port:"+port);
-    res.end();
-}).listen(port);
-socket=require("socket.io");
-io=socket.listen(app);
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
+'use strict';
+
+const express = require('express');
+const SocketServer = require('ws').Server;
+const path = require('path');
+
+const PORT = process.env.PORT || 3000;
+const INDEX = path.join(__dirname, 'index.html');
+
+const server = express()
+  .use((req, res) => res.sendFile(INDEX) )
+  .listen(PORT, () => console.log(`Listening on ${ PORT }`));
+
+const wss = new SocketServer({ server });
+
+wss.on('connection', (ws) => {
+  console.log('Client connected');
+  ws.on('close', () => console.log('Client disconnected'));
 });
-io.sockets.on("connection",function(socket){
-    console.log("new connection");
-    socket.on("eventA",function(data){
-        io.sockets.emit("eventB",data);
-    }); 
-});
+
+setInterval(() => {
+  wss.clients.forEach((client) => {
+    client.send(new Date().toTimeString());
+  });
+}, 1000);
