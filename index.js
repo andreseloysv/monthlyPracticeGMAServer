@@ -1,9 +1,11 @@
-
- var http = require('http').Server(app);
-  var io = require('socket.io')(http);
-  
- io.set('transports', ['xhr-polling']);
- io.set('polling duration', 10);
+var express = require('express'),
+app = express(),
+server = require('http').createServer(app),
+io = require('socket.io').listen(server),
+io.set('transports', ['xhr-polling']);
+io.set('polling duration', 10);
+ 
+server.listen(process.env.PORT || 3000);
  
   app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
