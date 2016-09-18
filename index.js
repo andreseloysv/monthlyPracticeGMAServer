@@ -12,7 +12,5 @@ var io = require('socket.io')(http);
        io.emit('chat message', msg);
      });
    });
-   http.listen(process.env.PORT || 5000){
-    console.log('listening on *:'+process.env.PORT);
-   });
+   http.listen(process.env.PORT || 5000);
 
