@@ -10,11 +10,12 @@ var io = require('socket.io')({
    //	res.send(process.env.PORT);
    //});
  
-   io.on('connection', function(socket){
-     socket.on('chat message', function(msg){
-       io.emit('chat message', msg);
-     });
-   });
+io.on('connection', function(socket){
+		socket.emit('boop');
+			socket.on('beep', function(){
+		socket.emit('boopeeeee');
+	});
+})
 
    http.listen(process.env.PORT || 5000);
 
