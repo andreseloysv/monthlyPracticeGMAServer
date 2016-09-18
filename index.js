@@ -1,11 +1,6 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
-io.configure(function () { 
-      io.set("transports", ["xhr-polling"]); 
-      io.set("polling duration", 10); 
-    });
   
   
    app.get('/', function(req, res){
