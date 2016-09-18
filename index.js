@@ -1,22 +1,18 @@
-var express = require('express'),
-app = express(),
-server = require('http').createServer(app),
-io = require('socket.io').listen(server),
-io.set('transports', ['xhr-polling']);
-io.set('polling duration', 10);
- 
-server.listen(process.env.PORT || 3000);
- 
-  app.get('/', function(req, res){
-    res.sendFile(__dirname + '/index.html');
-  });
-
-  io.on('connection', function(socket){
-    socket.on('chat message', function(msg){
-      io.emit('chat message', msg);
-    });
-  });
-  
- http.listen(3000, function(){
-   console.log('listening on *:3000');
-  });
+var port=process.env.PORT || 3000;
+var http=require('http');
+var app=http.createServer(function(req,res){
+    res.write("server listening to port:"+port);
+    res.end();
+}).listen(port);
+socket=require("socket.io");
+io=socket.listen(app);
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
+io.sockets.on("connection",function(socket){
+    console.log("new connection");
+    socket.on("eventA",function(data){
+        io.sockets.emit("eventB",data);
+    }); 
+});
