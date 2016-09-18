@@ -11,9 +11,12 @@ var io = require('socket.io')({
    //});
  
 io.on('connection', function(socket){
-		socket.emit('boop');
-			socket.on('beep', function(){
+	socket.emit('boop');
+	socket.on('beep', function(){
 		socket.emit('boopeeeee');
+	});
+	socket.on('position', function(msg){
+		io.emit('position', msg);
 	});
 })
 io.attach(process.env.PORT || 5000);
