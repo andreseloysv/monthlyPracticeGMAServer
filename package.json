@@ -7,7 +7,7 @@
 },
 "scripts": {
   "start": "node server.js"
-}
+},
   "dependencies": {
     "bufferutil": "1.2.1",
     "express": "4.13.4",
