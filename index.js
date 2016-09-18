@@ -13,10 +13,6 @@ var io = require('socket.io')(http);
        io.emit('chat message', msg);
      });
    });
-  io.on('connection', function(socket){
-	socket.on('beep', function(){
-		  socket.emit('boop');
-	  });
-  });
+
    http.listen(process.env.PORT || 5000);
 
