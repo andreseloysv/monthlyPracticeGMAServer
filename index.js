@@ -12,7 +12,8 @@ var io = require('socket.io')({
 
 io.on('connection', function (socket)
 {
-    socket.emit('newplayer');
+    //socket.emit('newplayer');
+    socket.broadcast.emit('newplayer');
 //    socket.on('beep', function ()
 //    {
 //        socket.emit('boopeeeee');
