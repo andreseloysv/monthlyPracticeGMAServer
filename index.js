@@ -20,7 +20,7 @@ io.on('connection', function (socket)
 //    {
 //        socket.emit('boopeeeee');
 //    });
-    socket.on('createroom', function (msg)
+    io.on('createroom', function (msg)
     {
         socket.emit('roomid', new Date().getTime());
     });
