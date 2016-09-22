@@ -14,7 +14,7 @@ io.on('connection', function (socket)
 {
     //socket.emit('newplayer');
     //socket.broadcast.emit('newplayer');
-    io.emit('connected');
+    socket.emit('connected');
     socket.to('others').emit('newplayer');
 //    socket.on('beep', function ()
 //    {
@@ -22,7 +22,7 @@ io.on('connection', function (socket)
 //    });
     socket.on('createroom', function (msg)
     {
-        io.emit('roomid', new Date().getTime());
+        socket.emit('roomid', new Date().getTime());
     });
     
     socket.on('position', function (msg)
