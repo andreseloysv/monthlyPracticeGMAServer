@@ -13,11 +13,18 @@ var io = require('socket.io')({
 io.on('connection', function (socket)
 {
     //socket.emit('newplayer');
-    socket.broadcast.emit('newplayer');
+    //socket.broadcast.emit('newplayer');
+    io.emit('connected');
+    socket.to('others').emit('newplayer');
 //    socket.on('beep', function ()
 //    {
 //        socket.emit('boopeeeee');
 //    });
+    socket.on('createroom', function (msg)
+    {
+        io.emit('roomid', new Date().getTime());
+    });
+    
     socket.on('position', function (msg)
     {
         io.emit('position', msg);
@@ -25,4 +32,3 @@ io.on('connection', function (socket)
 });
 io.attach(process.env.PORT || 5000);
 //http.listen(process.env.PORT || 5000);
-
