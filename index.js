@@ -29,8 +29,8 @@ io.on('connection', function (socket)
 
     socket.on('addme', function (msg)
     {
-        var playerId = String(new Date().getTime());
-        socket.broadcast.emit('newplayer',{playerid:playerId});
+        var newPlayerId = String(new Date().getTime());
+        socket.broadcast.emit('newplayer',{playerid:newPlayerId});
         //socket.emit('roomlist', JSON.stringify(roomList));
     });
     socket.on('getrooms', function (msg)
