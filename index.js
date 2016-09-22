@@ -15,7 +15,7 @@ io.on('connection', function (socket)
     //socket.emit('newplayer');
     //socket.broadcast.emit('newplayer');
     socket.emit('connected');
-    socket.to('others').emit('newplayer');
+    //socket.to('others').emit('newplayer');
 //    socket.on('beep', function ()
 //    {
 //        socket.emit('boopeeeee');
