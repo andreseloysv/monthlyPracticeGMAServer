@@ -22,7 +22,7 @@ io.on('connection', function (socket)
 //    });
     socket.on('createroom', function (msg)
     {
-        socket.emit('roomid', {hola:hola});
+        socket.emit('roomid', {hola:"hola"});
         socket.emit('roomid', new Date().getTime());
     });
     
