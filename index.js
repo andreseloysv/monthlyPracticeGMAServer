@@ -31,6 +31,7 @@ io.on('connection', function (socket)
     {
         var newPlayerId = String(new Date().getTime());
         socket.broadcast.emit('newplayer', {playerid: newPlayerId});
+        socket.emit('newplayer', {playerid: newPlayerId});
         //socket.emit('roomlist', JSON.stringify(roomList));
     });
     socket.on('getrooms', function (msg)
