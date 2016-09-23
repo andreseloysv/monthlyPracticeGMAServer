@@ -36,7 +36,8 @@ io.on('connection', function (socket)
     });
     socket.on('getrooms', function (msg)
     {
-        socket.emit('roomlist', JSON.stringify(roomList));
+//        socket.emit('roomlist', JSON.stringify(roomList));
+socket.emit('roomlist', {roomlist:"hola"});
     });
 
     socket.on('position', function (msg)
