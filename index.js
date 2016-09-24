@@ -65,13 +65,10 @@ io.on('connection', function (socket)
 });
 io.attach(process.env.PORT || 5000);
 //http.listen(process.env.PORT || 5000);
-//class room {
-//    roomId;
-//    roomName;
-//    userList = [];
-//    constructor(roomId, roomName, userList) {
-//        this.roomId = roomId;
-//        this.roomName = roomName;
-//        this.userList = userList;
-//    }
-//}
+class room {
+    constructor(roomId, roomName, userList) {
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.userList = userList;
+    }
+}
