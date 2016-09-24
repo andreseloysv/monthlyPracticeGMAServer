@@ -63,7 +63,8 @@ io.on('connection', function (socket)
         for (var i = 0; i < roomListSize; i++) {
             if (roomList[i].roomId == msg.roomid) {
                 socket.emit('joined');
-                io.emit('position', msg);
+                socket.broadcast.emit('position', msg);
+                //io.emit('position', msg);
             }
         }
     });
