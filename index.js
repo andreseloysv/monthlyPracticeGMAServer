@@ -52,14 +52,20 @@ io.on('connection', function (socket)
             if (roomList[i].roomId == msg.roomname) {
                 roomList[i].userList.push(msg.playerid);
                 socket.emit('joined');
-                
+
             }
         }
-
     });
 
     socket.on('position', function (msg)
     {
+        var roomListSize = roomList.length;
+        for (var i = 0; i < roomListSize; i++) {
+            if (roomList[i].roomId == msg.roomid) {
+                socket.emit('joined');
+
+            }
+        }
         io.emit('position', msg);
     });
 });
