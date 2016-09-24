@@ -50,8 +50,10 @@ io.on('connection', function (socket)
 //        socket.emit('roomid', {roomid: roomId});
         var roomListSize = roomList.length;
         for (var i = 0; i < roomListSize; i++) {
+            console.log(msg);
             if (roomList[i].roomId == msg.roomname) {
                 socket.emit('joined');
+                
             }
         }
 
