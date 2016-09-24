@@ -52,7 +52,7 @@ io.on('connection', function (socket)
             if (roomList[i].roomId == msg.roomname) {
                 roomList[i].userList.push(msg.playerid);
                 socket.emit('joined');
-
+                socket.broadcast.emit('newplayer',{playerid:msg.playerid});
             }
         }
     });
@@ -63,10 +63,9 @@ io.on('connection', function (socket)
         for (var i = 0; i < roomListSize; i++) {
             if (roomList[i].roomId == msg.roomid) {
                 socket.emit('joined');
-
+                io.emit('position', msg);
             }
         }
-        io.emit('position', msg);
     });
 });
 io.attach(process.env.PORT || 5000);
