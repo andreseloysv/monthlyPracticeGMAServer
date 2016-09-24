@@ -26,7 +26,7 @@ io.on('connection', function (socket)
     socket.on('createroom', function (msg)
     {
         var roomId = String(new Date().getTime());
-        roomList.push(new room(roomId, msg.roomName, [msg.playerid]));
+        roomList.push(new room(roomId, msg.roomname, [msg.playerid]));
         socket.emit('roomid', {roomid: roomId});
     });
 
@@ -66,6 +66,8 @@ io.on('connection', function (socket)
 io.attach(process.env.PORT || 5000);
 //http.listen(process.env.PORT || 5000);
 class room {
+    roomId;
+    roomName;
     userList = [];
     constructor(roomId, roomName, userList) {
         this.roomId = roomId;
