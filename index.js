@@ -26,8 +26,7 @@ io.on('connection', function (socket)
     socket.on('createroom', function (msg)
     {
         var roomId = String(new Date().getTime());
-        roomList.push(roomId);
-        room.push(new room(roomId, msg.roomName, [msg.playerid]));
+        roomList.push(new room(roomId, msg.roomName, [msg.playerid]));
         socket.emit('roomid', {roomid: roomId});
     });
 
