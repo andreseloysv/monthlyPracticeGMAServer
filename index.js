@@ -50,9 +50,12 @@ io.on('connection', function (socket)
         var roomListSize = roomList.length;
         for (var i = 0; i < roomListSize; i++) {
             if (roomList[i].roomId == msg.roomname) {
-                roomList[i].userList.push(msg.playerid);
-                socket.broadcast.emit('newplayer',{playerid:msg.playerid});
-                socket.emit('joined',{roomid:msg.roomname});
+                if (!roomList[i].isPlayerHere(msg.playerid))
+                {
+                    roomList[i].userList.push(msg.playerid);
+                    socket.broadcast.emit('newplayer', {playerid: msg.playerid});
+                    socket.emit('joined', {roomid: msg.roomname, otherplayers: roomList[i].getOtherPlayers(msg.playerid)});
+                }
             }
         }
     });
@@ -76,5 +79,24 @@ class room {
         this.roomId = roomId;
         this.roomName = roomName;
         this.userList = userList;
+    }
+    isPlayerHere(playerid) {
+        var playerListSize = this.userList.length;
+        for (var i = 0; i < playerListSize; i++) {
+            if (this.userList[i] == playerid) {
+                return true;
+            }
+        }
+        return false;
+    }
+    getOtherPlayers(playerid) {
+        var playerListSize = this.userList.length;
+        var playerList=[];
+        for (var i = 0; i < playerListSize; i++) {
+            if (userList[i] != playerid) {
+                playerList.push(this.userList[i]);
+            }
+        }
+        return playerList;
     }
 }
