@@ -53,7 +53,7 @@ io.on('connection', function (socket)
                 if (!roomList[i].isPlayerHere(msg.playerid))
                 {
                     roomList[i].userList.push(msg.playerid);
-                    socket.broadcast.emit('newplayer', {playerid: msg.playerid});
+                    socket.broadcast.to(msg.roomid).emit('newplayer', {playerid: msg.playerid});
                     socket.emit('joined', {roomid: msg.roomname, otherplayers: roomList[i].getOtherPlayers(msg.playerid)});
                 }
             }
