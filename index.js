@@ -98,14 +98,14 @@ io.on('connection', function (socket)
     socket.on('position', function (msg)
     {
         var roomListSize = roomList.length;
-        for (var i = 0; i < roomListSize; i++) {
-            if (roomList[i].roomId == msg.roomid) {
+//        for (var i = 0; i < roomListSize; i++) {
+//            if (roomList[i].roomId == msg.roomid) {
                 //socket.emit('joined');
                 //socket.broadcast.to(msg.roomid).emit('position', msg);
                 io.sockets.in(msg.roomid).emit('position', msg);
                 //io.emit('position', msg);
-            }
-        }
+//            }
+//        }
     });
     socket.on('disconnect', function () {
         roomList[0].removeplayer(playerId);
