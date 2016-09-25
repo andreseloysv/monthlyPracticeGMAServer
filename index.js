@@ -16,13 +16,21 @@ class room {
     }
     getOtherPlayers(playerid) {
         var playerListSize = this.userList.length;
-        var playerList=[];
+        var playerList = [];
         for (var i = 0; i < playerListSize; i++) {
             if (this.userList[i] != playerid) {
                 playerList.push(this.userList[i]);
             }
         }
         return playerList;
+    }
+    removeplayer(playerid) {
+        var playerListSize = this.userList.length;
+        for (var i = 0; i < playerListSize; i++) {
+            if (this.userList[i] == playerid) {
+                this.userList.splice(i, 1);
+            }
+        }
     }
 }
 
@@ -98,6 +106,9 @@ io.on('connection', function (socket)
                 //io.emit('position', msg);
             }
         }
+    });
+    socket.on('disconnect', function () {
+        removeplayer(playerId);
     });
 });
 io.attach(process.env.PORT || 5000);
