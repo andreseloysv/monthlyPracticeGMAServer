@@ -66,7 +66,7 @@ io.on('connection', function (socket)
         for (var i = 0; i < roomListSize; i++) {
             if (roomList[i].roomId == msg.roomid) {
                 //socket.emit('joined');
-                socket.broadcast.emit('position', msg);
+                socket.broadcast.to(msg.roomid).emit('position', msg);
                 //io.emit('position', msg);
             }
         }
