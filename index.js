@@ -56,6 +56,7 @@ io.on('connection', function (socket)
         var roomId = String(new Date().getTime());
         roomList.push(new room(roomId, msg.roomname, [msg.playerid]));
         socket.emit('roomid', {roomid: roomId});
+        socket.join(roomId);
     });
 
     socket.on('addme', function (msg)
@@ -80,6 +81,7 @@ io.on('connection', function (socket)
                     roomList[i].userList.push(msg.playerid);
                     socket.broadcast.to(msg.roomid).emit('newplayer', {playerid: msg.playerid});
                     socket.emit('joined', {roomid: msg.roomname, otherplayers: roomList[i].getOtherPlayers(msg.playerid)});
+                    socket.join(msg.roomname);
                 }
             }
         }
@@ -91,7 +93,8 @@ io.on('connection', function (socket)
         for (var i = 0; i < roomListSize; i++) {
             if (roomList[i].roomId == msg.roomid) {
                 //socket.emit('joined');
-                socket.broadcast.to(msg.roomid).emit('position', msg);
+                //socket.broadcast.to(msg.roomid).emit('position', msg);
+                io.sockets.in(msg.roomid).emit('position', msg);
                 //io.emit('position', msg);
             }
         }
