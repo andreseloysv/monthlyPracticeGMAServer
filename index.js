@@ -87,9 +87,9 @@ io.on('connection', function (socket)
                 if (!roomList[i].isPlayerHere(msg.playerid))
                 {
                     roomList[i].userList.push(msg.playerid);
-                    socket.broadcast.to(msg.roomid).emit('newplayer', {playerid: msg.playerid});
+                    socket.join(roomList[i].roomId);
+                    socket.broadcast.to(roomList[i].roomId).emit('newplayer', {playerid: msg.playerid});
                     socket.emit('joined', {roomid: msg.roomname, otherplayers: roomList[i].getOtherPlayers(msg.playerid)});
-                    socket.join(msg.roomname);
                 }
             }
         }
