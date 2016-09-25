@@ -1,3 +1,31 @@
+"use strict";
+class room {
+    constructor(roomId, roomName, userList) {
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.userList = userList;
+    }
+    isPlayerHere(playerid) {
+        var playerListSize = this.userList.length;
+        for (var i = 0; i < playerListSize; i++) {
+            if (this.userList[i] == playerid) {
+                return true;
+            }
+        }
+        return false;
+    }
+    getOtherPlayers(playerid) {
+        var playerListSize = this.userList.length;
+        var playerList=[];
+        for (var i = 0; i < playerListSize; i++) {
+            if (this.userList[i] != playerid) {
+                playerList.push(this.userList[i]);
+            }
+        }
+        return playerList;
+    }
+}
+
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')({
@@ -44,9 +72,6 @@ io.on('connection', function (socket)
     });
     socket.on('joinroom', function (msg)
     {
-//        var roomId = String(new Date().getTime());
-//        roomList.push(roomId);
-//        socket.emit('roomid', {roomid: roomId});
         var roomListSize = roomList.length;
         for (var i = 0; i < roomListSize; i++) {
             if (roomList[i].roomId == msg.roomname) {
@@ -74,29 +99,3 @@ io.on('connection', function (socket)
 });
 io.attach(process.env.PORT || 5000);
 //http.listen(process.env.PORT || 5000);
-class room {
-    constructor(roomId, roomName, userList) {
-        this.roomId = roomId;
-        this.roomName = roomName;
-        this.userList = userList;
-    }
-    isPlayerHere(playerid) {
-        var playerListSize = this.userList.length;
-        for (var i = 0; i < playerListSize; i++) {
-            if (this.userList[i] == playerid) {
-                return true;
-            }
-        }
-        return false;
-    }
-    getOtherPlayers(playerid) {
-        var playerListSize = this.userList.length;
-        var playerList=[];
-        for (var i = 0; i < playerListSize; i++) {
-            if (userList[i] != playerid) {
-                playerList.push(this.userList[i]);
-            }
-        }
-        return playerList;
-    }
-}
