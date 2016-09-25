@@ -108,7 +108,7 @@ io.on('connection', function (socket)
         }
     });
     socket.on('disconnect', function () {
-        removeplayer(playerId);
+        roomList[0].removeplayer(playerId);
     });
 });
 io.attach(process.env.PORT || 5000);
