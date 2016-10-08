@@ -100,15 +100,17 @@ io.on('connection', function (socket)
         var roomListSize = roomList.length;
 //        for (var i = 0; i < roomListSize; i++) {
 //            if (roomList[i].roomId == msg.roomid) {
-                //socket.emit('joined');
-                //socket.broadcast.to(msg.roomid).emit('position', msg);
-                io.sockets.in(msg.roomid).emit('position', msg);
-                //io.emit('position', msg);
+        //socket.emit('joined');
+        //socket.broadcast.to(msg.roomid).emit('position', msg);
+        io.sockets.in(msg.roomid).emit('position', msg);
+        //io.emit('position', msg);
 //            }
 //        }
     });
     socket.on('disconnect', function () {
-        roomList[0].removeplayer(playerId);
+        if (roomList.length > 0) {
+            roomList[0].removeplayer(playerId);
+        }
     });
 });
 io.attach(process.env.PORT || 5000);
