@@ -7,7 +7,7 @@ function getLocations(){
     pg.defaults.ssl = true;
     pg.connect(conString, function(err, client) {
       if (err) throw err;
-      client.query('SELECT * FROM location').then(res => socket.emit('roomid', {locations: res.rows}))
+      client.query('SELECT * FROM location').then(res => socket.emit('locations', {locations: res.rows}))
     });
 }
 
@@ -131,7 +131,6 @@ io.on('connection', function (socket)
     });
 
 });
-getLocations();
 io.attach(process.env.PORT || 5000);
 //http.listen(process.env.PORT || 5000);
 
