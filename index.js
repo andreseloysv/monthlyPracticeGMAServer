@@ -139,7 +139,7 @@ io.on('connection', function (socket)
 
     socket.on('getLocations', function (msg)
     {
-        socket.emit('locations', {locations: "getLocationsTesting"});
+        socket.emit('locations', {locations: getLocations()});
     });
 
 });
