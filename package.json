@@ -3,14 +3,26 @@
   "version": "0.0.1",
   "description": "my first socket.io app",
   "engines": {
-  "node": "6.2.0"
-},
-"scripts": {
-  "start": "node index.js"
-},
+    "node": "6.2.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "express": "4.13.4",
-    "socket.io" : "1.2.0",
+    "socket.io": "1.2.0",
     "ws": "1.1.0"
-  }
+  },
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andreseloysv/monthlyPracticeGMAServer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andreseloysv/monthlyPracticeGMAServer/issues"
+  },
+  "homepage": "https://github.com/andreseloysv/monthlyPracticeGMAServer#readme"
 }
