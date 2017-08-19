@@ -2,25 +2,13 @@
 
 //Test postgres conection:
 function getLocations(){
-    var result = "";
-    var pg = require('pg');
     var conString = "postgres://wqqmkpkvddqxrf:d65bdb63cb9f3de3796198b42a27ae7ccf1b0e65864832f08b9cc23c7b51d0aa@ec2-46-137-97-169.eu-west-1.compute.amazonaws.com:5432/da4514sv0048rq";
-    
-    var client = new pg.Client(conString);
-    client.connect();
-    
-    var query = client.query("SELECT * FROM location");
-    //fired after last row is emitted
-    
-    query.on('row', function(row) {
-        result = result+row.toString();
-        console.log(row);
+    var pg = require('pg');
+    pg.defaults.ssl = true;
+    pg.connect(conString, function(err, client) {
+      if (err) throw err;
+      client.query('SELECT * FROM location').then(res => socket.emit('roomid', {locations: res.rows}))
     });
-    
-    query.on('end', function() {
-        client.end();
-    });
-    return result;
 }
 
 class room {
@@ -139,10 +127,11 @@ io.on('connection', function (socket)
 
     socket.on('getLocations', function (msg)
     {
-        socket.emit('locations', {locations: getLocations()});
+        getLocations()
     });
 
 });
+getLocations();
 io.attach(process.env.PORT || 5000);
 //http.listen(process.env.PORT || 5000);
 
