@@ -115,10 +115,7 @@ io.on('connection', function (socket)
 
     socket.on('getLocations', function (msg)
     {
-        var newPlayerId = String(new Date().getTime());
-        socket.emit('playeradded', {playerid: newPlayerId});
-        socket.broadcast.emit('newplayer', {playerid: newPlayerId});
-        //socket.emit('roomlist', JSON.stringify(roomList));
+        socket.emit('locations', {locations: getLocations()});
     });
 
 });
