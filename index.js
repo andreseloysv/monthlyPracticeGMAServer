@@ -155,18 +155,17 @@ io.on('connection', function (socket)
     {
 
         if(isValidString(msg.login)&&isValidString(msg.password)){
-            socket.emit('logged', {roomid: "El mio"});
-
             if(tryLoggin(msg.login,msg.password)){
-                socket.emit('logged');
+                socket.emit(logged,{result:'succesful'});
             }
             else{
-                socket.emit('validation error');
+                socket.emit(logged,{result:'validation error'});
             }
         }else{
-            socket.emit('validation error');
+            socket.emit(logged,{result:'validation error'});
         }
-/*
+
+        /*
         if(msg.login === "andreslaley" && msg.password === "1234"){
             
         }else{
