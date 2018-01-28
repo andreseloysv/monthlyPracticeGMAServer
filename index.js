@@ -13,7 +13,7 @@ function getLocations(socket){
 
 function tryLoggin(socket,userName,password){
     var results = [];
-    pg.connect(conString, function(err, client) {
+    pg.connect(conString, function(err, client,done) {
       if (err) throw err;
         const query = client.query("SELECT * FROM public.user WHERE login='"+userName+"' and password='"+password+"'", (err, res) => {
             console.log(res.rows.length);
@@ -27,7 +27,7 @@ function tryLoggin(socket,userName,password){
     });
 }
 function savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experience,locationx,locationy){
-    pg.connect(conString, function(err, client) {
+    pg.connect(conString, function(err, client,done) {
       if (err) throw err;
         const query = client.query("UPDATE public.user SET name='"+name+"', level='"+level+"', maxlifepoinst='"+maxLifePoinst+"', attack='"+attack+"', defence='"+defence+"', experience='"+experience+"', locationx='"+locationx+"', locationy='"+locationy+"' WHERE login='"+login+"'", (err, res) => {
             reponsePlayerUpdate(socket,true,query);
@@ -36,7 +36,7 @@ function savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experie
     });
 }
 function loadPlayerData(socket,login){
-    pg.connect(conString, function(err, client) {
+    pg.connect(conString, function(err, client,done) {
       if (err) throw err;
         const query = client.query("Select * from public.user WHERE login='"+login+"'", (err, res) => {
             console.log(res.rows.length);
