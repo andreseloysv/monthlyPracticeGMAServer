@@ -28,7 +28,7 @@ function savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experie
     pg.connect(conString, function(err, client) {
       if (err) throw err;
 
-        const query = client.query("UPDATE public.user SET name='"+name+"', level='"+level+"', maxLifePoinst='"+maxLifePoinst+"', attack='"+attack+"', defence='"+defence+"', experience='"+experience+"', locationx='"+locationx+"', locationy='"+locationy+"' WHERE login='"+login+"'", (err, res) => {
+        const query = client.query("UPDATE public.user SET name='"+name+"', level='"+level+"', maxlifepoinst='"+maxLifePoinst+"', attack='"+attack+"', defence='"+defence+"', experience='"+experience+"', locationx='"+locationx+"', locationy='"+locationy+"' WHERE login='"+login+"'", (err, res) => {
             reponsePlayerUpdate(socket,result);
         });
     });
