@@ -32,6 +32,21 @@ function savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experie
         });
     });
 }
+function loadPlayerData(socket,login){
+    pg.connect(conString, function(err, client) {
+      if (err) throw err;
+        const query = client.query("Select * from public.user WHERE login='"+login+"'", (err, res) => {
+            console.log(res.rows.length);
+            if(res.rows.length === 1){
+                loadedPlayerData(socket,true,res.rows[0]);
+            }else{
+                loadedPlayerData(socket,false,null);
+            }
+        });
+    });
+}
+
+
 function isValidString(str) { return /^\w+$/.test(str); }
 
 class room {
@@ -170,7 +185,14 @@ io.on('connection', function (socket)
             socket.emit('savedPlayer',{result:'validation error - please just letters or numbers'});
         }
     });
-    
+    socket.on('loadPlayerData', function (msg)
+    {
+        if(isValidString(msg.login)){
+            loadPlayerData(socket,msg.login,msg.name,msg.level,msg.maxLifePoinst,msg.attack,msg.defence,msg.experience,msg.locationx,msg.locationy)
+        }else{
+            socket.emit('recivePlayerData',{result:'validation error - please just letters or numbers'});
+        }
+    });
 
 });
 io.attach(process.env.PORT || 5000);
@@ -191,6 +213,15 @@ function reponsePlayerUpdate(socket,result,query){
     else{
         socket.emit('savedPlayer', {result:'Error: wrong argumenten'});
     }
+    
+}
+function loadedPlayerData(socket,result,query,data){
+    if(result){
+        socket.emit('recivePlayerData', {result:'succesful',query:query,data:data});
+    }
+    else{
+        socket.emit('recivePlayerData', {result:'Error: wrong argumenten'});
+    }       
 }
 
 
