@@ -162,16 +162,8 @@ io.on('connection', function (socket)
                 socket.emit('logged',{result:'validation error'});
             }
         }else{
-            socket.emit('logged',{result:'validation error'});
+            socket.emit('logged',{result:'validation error - please just letters or numbers'});
         }
-
-        /*
-        if(msg.login === "andreslaley" && msg.password === "1234"){
-            
-        }else{
-            socket.emit('logged');
-        }
-  */      
     });
 
 });
