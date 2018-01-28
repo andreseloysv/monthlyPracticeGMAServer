@@ -7,6 +7,7 @@ function getLocations(socket){
     pg.connect(conString, function(err, client) {
       if (err) throw err;
       client.query('SELECT * FROM location').then(res => socket.emit('locations', {locations: res.rows}))
+      client.end()
     });
 }
 
@@ -21,6 +22,7 @@ function tryLoggin(socket,userName,password){
             }else{
                 responseLogin(socket,false);
             }
+            client.end()
         });
     });
 }
@@ -29,6 +31,7 @@ function savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experie
       if (err) throw err;
         const query = client.query("UPDATE public.user SET name='"+name+"', level='"+level+"', maxlifepoinst='"+maxLifePoinst+"', attack='"+attack+"', defence='"+defence+"', experience='"+experience+"', locationx='"+locationx+"', locationy='"+locationy+"' WHERE login='"+login+"'", (err, res) => {
             reponsePlayerUpdate(socket,true,query);
+            client.end()
         });
     });
 }
@@ -42,6 +45,7 @@ function loadPlayerData(socket,login){
             }else{
                 loadedPlayerData(socket,false,query,null);
             }
+            client.end()
         });
     });
 }
@@ -91,10 +95,6 @@ var io = require('socket.io')({
 });
 
 
-//app.get('/', function(req, res){
-//  res.sendFile(__dirname + '/index.html');
-//	res.send(process.env.PORT);
-//});
 var roomList = [];
 var playerList = [];
 io.on('connection', function (socket)
@@ -149,14 +149,7 @@ io.on('connection', function (socket)
     socket.on('position', function (msg)
     {
         var roomListSize = roomList.length;
-//        for (var i = 0; i < roomListSize; i++) {
-//            if (roomList[i].roomId == msg.roomid) {
-        //socket.emit('joined');
-        //socket.broadcast.to(msg.roomid).emit('position', msg);
         io.sockets.in(msg.roomid).emit('position', msg);
-        //io.emit('position', msg);
-//            }
-//        }
     });
     socket.on('disconnect', function () {
         if (roomList.length > 0) {
