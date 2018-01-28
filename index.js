@@ -165,7 +165,7 @@ io.on('connection', function (socket)
     socket.on('savePlayer', function (msg)
     {
         if(isValidString(msg.login)&&isValidString(msg.name)&&isValidString(msg.level)&&isValidString(msg.maxLifePoinst)&&isValidString(msg.attack)&&isValidString(msg.defence)&&isValidString(msg.experience)&&isValidString(msg.locationx)&&isValidString(msg.locationy)){
-            savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experience,locationx,locationy)
+            savePlayer(socket,msg.login,msg.name,msg.level,msg.maxLifePoinst,msg.attack,msg.defence,msg.experience,msg.locationx,msg.locationy)
         }else{
             socket.emit('savedPlayer',{result:'validation error - please just letters or numbers'});
         }
