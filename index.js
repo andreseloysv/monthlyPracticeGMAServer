@@ -38,7 +38,7 @@ function loadPlayerData(socket,login){
         const query = client.query("Select * from public.user WHERE login='"+login+"'", (err, res) => {
             console.log(res.rows.length);
             if(res.rows.length === 1){
-                loadedPlayerData(socket,true,query,res.rows[0]);
+                loadedPlayerData(socket,true,query,res.rows);
             }else{
                 loadedPlayerData(socket,false,query,null);
             }
@@ -218,7 +218,7 @@ function reponsePlayerUpdate(socket,result,query){
 }
 function loadedPlayerData(socket,result,query,data){
     if(result){
-        socket.emit('recivePlayerData', {result:'succesful',query:query,data:data});
+        socket.emit('recivePlayerData', {result:'succesful',data:data});
     }
     else{
         socket.emit('recivePlayerData', {result:'Error: wrong argumenten'});
