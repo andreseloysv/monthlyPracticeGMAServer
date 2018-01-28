@@ -19,6 +19,7 @@ function tryLoggin(userName,password){
     pg.connect(conString, function(err, client) {
       if (err) throw err;
         const query = client.query("SELECT * FROM public.user WHERE login='"+userName+"' and password='"+password+"'", (err, res) => {
+            console.log(res);
             if(res.rows.length === 1){
                 return true;
             }else{
@@ -26,6 +27,7 @@ function tryLoggin(userName,password){
             }
         });
     });
+    return false;
 }
 
 function isValidString(str) { return /^\w+$/.test(str); }
