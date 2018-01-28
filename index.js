@@ -7,7 +7,7 @@ function getLocations(socket){
     pg.connect(conString, function(err, client) {
       if (err) throw err;
       client.query('SELECT * FROM location').then(res => socket.emit('locations', {locations: res.rows}))
-      client.end()
+      
     });
 }
 
@@ -22,7 +22,7 @@ function tryLoggin(socket,userName,password){
             }else{
                 responseLogin(socket,false);
             }
-            client.end()
+            done()
         });
     });
 }
@@ -31,7 +31,7 @@ function savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experie
       if (err) throw err;
         const query = client.query("UPDATE public.user SET name='"+name+"', level='"+level+"', maxlifepoinst='"+maxLifePoinst+"', attack='"+attack+"', defence='"+defence+"', experience='"+experience+"', locationx='"+locationx+"', locationy='"+locationy+"' WHERE login='"+login+"'", (err, res) => {
             reponsePlayerUpdate(socket,true,query);
-            client.end()
+            done()
         });
     });
 }
@@ -45,7 +45,7 @@ function loadPlayerData(socket,login){
             }else{
                 loadedPlayerData(socket,false,query,null);
             }
-            client.end()
+            done()
         });
     });
 }
