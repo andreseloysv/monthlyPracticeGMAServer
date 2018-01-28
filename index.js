@@ -21,13 +21,12 @@ function tryLoggin(userName,password){
         const query = client.query("SELECT * FROM public.user WHERE login='"+userName+"' and password='"+password+"'", (err, res) => {
             console.log(res.rows.length);
             if(res.rows.length === 1){
-                return true;
+                responseLogin(true);
             }else{
-                return false;
+                responseLogin(false);
             }
         });
     });
-    return false;
 }
 
 function isValidString(str) { return /^\w+$/.test(str); }
@@ -153,14 +152,8 @@ io.on('connection', function (socket)
 
     socket.on('login', function (msg)
     {
-
         if(isValidString(msg.login)&&isValidString(msg.password)){
-            if(tryLoggin(msg.login,msg.password)){
-                socket.emit('logged',{result:'succesful'});
-            }
-            else{
-                socket.emit('logged',{result:'validation error'});
-            }
+            tryLoggin(msg.login,msg.password);
         }else{
             socket.emit('logged',{result:'validation error - please just letters or numbers'});
         }
@@ -169,6 +162,15 @@ io.on('connection', function (socket)
 });
 io.attach(process.env.PORT || 5000);
 //http.listen(process.env.PORT || 5000);
+
+function responseLogin(result){
+    if(result){
+        socket.emit('logged', {result:'succesful'});
+    }
+    else{
+        socket.emit('logged', {result:'validation error'});
+    }
+}
 
 
 
