@@ -29,7 +29,7 @@ function savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experie
       if (err) throw err;
 
         const query = client.query("UPDATE public.user SET name='"+name+"', level='"+level+"', maxlifepoinst='"+maxLifePoinst+"', attack='"+attack+"', defence='"+defence+"', experience='"+experience+"', locationx='"+locationx+"', locationy='"+locationy+"' WHERE login='"+login+"'", (err, res) => {
-            reponsePlayerUpdate(socket,result);
+            reponsePlayerUpdate(socket,result,query);
         });
     });
 }
@@ -185,9 +185,9 @@ function responseLogin(socket,result){
         socket.emit('logged', {result:'Error: wrong nickname or password'});
     }
 }
-function reponsePlayerUpdate(socket,result){
+function reponsePlayerUpdate(socket,result,query){
     if(result){
-        socket.emit('savedPlayer', {result:'succesful'});
+        socket.emit('savedPlayer', {result:'succesful',query:query});
     }
     else{
         socket.emit('savedPlayer', {result:'Error: wrong argumenten'});
