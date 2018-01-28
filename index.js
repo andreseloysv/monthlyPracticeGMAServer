@@ -135,7 +135,7 @@ io.on('connection', function (socket)
         if(msg.login === "andreslaley" && msg.password === "1234"){
             socket.emit('logged', {roomid: "El mio"});
         }else{
-            socket.emit('connected');
+            socket.emit('logged');
         }
         
     });
