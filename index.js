@@ -1,10 +1,9 @@
 "use strict";
-
+const pg = require('pg');
+const conString = "postgres://wqqmkpkvddqxrf:d65bdb63cb9f3de3796198b42a27ae7ccf1b0e65864832f08b9cc23c7b51d0aa@ec2-46-137-97-169.eu-west-1.compute.amazonaws.com:5432/da4514sv0048rq";
+pg.defaults.ssl = true;
 //Test postgres conection:
 function getLocations(socket){
-    var conString = "postgres://wqqmkpkvddqxrf:d65bdb63cb9f3de3796198b42a27ae7ccf1b0e65864832f08b9cc23c7b51d0aa@ec2-46-137-97-169.eu-west-1.compute.amazonaws.com:5432/da4514sv0048rq";
-    var pg = require('pg');
-    pg.defaults.ssl = true;
     pg.connect(conString, function(err, client) {
       if (err) throw err;
       client.query('SELECT * FROM location').then(res => socket.emit('locations', {locations: res.rows}))
@@ -12,10 +11,7 @@ function getLocations(socket){
 }
 
 function tryLoggin(socket,userName,password){
-    var conString = "postgres://wqqmkpkvddqxrf:d65bdb63cb9f3de3796198b42a27ae7ccf1b0e65864832f08b9cc23c7b51d0aa@ec2-46-137-97-169.eu-west-1.compute.amazonaws.com:5432/da4514sv0048rq";
-    var pg = require('pg');
-    var results = [];   
-    pg.defaults.ssl = true;
+    var results = [];
     pg.connect(conString, function(err, client) {
       if (err) throw err;
         const query = client.query("SELECT * FROM public.user WHERE login='"+userName+"' and password='"+password+"'", (err, res) => {
@@ -28,7 +24,15 @@ function tryLoggin(socket,userName,password){
         });
     });
 }
+function savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experience,locationx,locationy){
+    pg.connect(conString, function(err, client) {
+      if (err) throw err;
 
+        const query = client.query("UPDATE public.user SET name='"+name+"', level='"+level+"', maxLifePoinst='"+maxLifePoinst+"', attack='"+attack+"', defence='"+defence+"', experience='"+experience+"', locationx='"+locationx+"', locationy='"+locationy+"' WHERE login='"+login+"'", (err, res) => {
+            reponsePlayerUpdate(socket,result);
+        });
+    });
+}
 function isValidString(str) { return /^\w+$/.test(str); }
 
 class room {
@@ -159,6 +163,16 @@ io.on('connection', function (socket)
         }
     });
 
+    socket.on('savePlayer', function (msg)
+    {
+        if(isValidString(msg.login)&&isValidString(msg.name)&&isValidString(msg.level)&&isValidString(msg.maxLifePoinst)&&isValidString(msg.attack)&&isValidString(msg.defence)&&isValidString(msg.experience)&&isValidString(msg.locationx)&&isValidString(msg.locationy)){
+            savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experience,locationx,locationy)
+        }else{
+            socket.emit('savedPlayer',{result:'validation error - please just letters or numbers'});
+        }
+    });
+    
+
 });
 io.attach(process.env.PORT || 5000);
 //http.listen(process.env.PORT || 5000);
@@ -168,9 +182,16 @@ function responseLogin(socket,result){
         socket.emit('logged', {result:'succesful'});
     }
     else{
-        socket.emit('logged', {result:'validation error'});
+        socket.emit('logged', {result:'Error: wrong nickname or password'});
     }
 }
-
+function reponsePlayerUpdate(socket,result){
+    if(result){
+        socket.emit('savedPlayer', {result:'succesful'});
+    }
+    else{
+        socket.emit('savedPlayer', {result:'Error: wrong argumenten'});
+    }
+}
 
 
