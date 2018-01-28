@@ -38,9 +38,9 @@ function loadPlayerData(socket,login){
         const query = client.query("Select * from public.user WHERE login='"+login+"'", (err, res) => {
             console.log(res.rows.length);
             if(res.rows.length === 1){
-                loadedPlayerData(socket,true,res.rows[0]);
+                loadedPlayerData(socket,true,query,res.rows[0]);
             }else{
-                loadedPlayerData(socket,false,null);
+                loadedPlayerData(socket,false,query,null);
             }
         });
     });
@@ -104,6 +104,7 @@ io.on('connection', function (socket)
     var playerId = String(new Date().getTime());
     playerList.push(playerId);
     socket.emit('connected', {playerid: playerId});
+    
     //socket.to('others').emit('newplayer');
 //    socket.on('beep', function ()
 //    {
@@ -188,7 +189,7 @@ io.on('connection', function (socket)
     socket.on('loadPlayerData', function (msg)
     {
         if(isValidString(msg.login)){
-            loadPlayerData(socket,msg.login,msg.name,msg.level,msg.maxLifePoinst,msg.attack,msg.defence,msg.experience,msg.locationx,msg.locationy)
+            loadPlayerData(socket,msg.login)
         }else{
             socket.emit('recivePlayerData',{result:'validation error - please just letters or numbers'});
         }
