@@ -130,8 +130,19 @@ io.on('connection', function (socket)
         getLocations(socket)
     });
 
+    socket.on('login', function (msg)
+    {
+        if(msg.login === "andreslaley" && msg.password === "1234"){
+            socket.emit('logged', {roomid: "El mio"});
+        }else{
+            socket.emit('connected');
+        }
+        
+    });
+
 });
 io.attach(process.env.PORT || 5000);
 //http.listen(process.env.PORT || 5000);
+
 
 
