@@ -29,7 +29,7 @@ function tryLoggin(socket,userName,password){
 function tryRegisterPlayer(socket,login,password,name,email,phone){
     pg.connect(conString, function(err, client,done) {
       if (err) throw err;
-        const query = client.query("INSERT INTO public.user (login, password, name, email, phone) VALUES ('"+login+"', '"+password+"'", '"+name+"'", '"+email+"'", '"+phone+"')")  , (err, res) => {
+        const query = client.query("INSERT INTO public.user (login, password, name, email, phone) VALUES ('"+login+"', '"+password+"', '"+name+"', '"+email+"', '"+phone+"')" , (err, res) => {
             responseRegisterPlayer(socket,true);
             done()
         });
@@ -219,7 +219,7 @@ function responseLogin(socket,result){
         socket.emit('logged', {result:'Error: wrong nickname or password'});
     }
 }
-function responseRegisterPlayer()(socket,result){
+function responseRegisterPlayer(socket,result){
     if(result){
         socket.emit('registredPlayer', {result:'succesful'});
     }
