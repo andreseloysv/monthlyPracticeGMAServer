@@ -26,6 +26,15 @@ function tryLoggin(socket,userName,password){
         });
     });
 }
+function tryRegisterPlayer(socket,login,password,name,email,phone){
+    pg.connect(conString, function(err, client,done) {
+      if (err) throw err;
+        const query = client.query("INSERT INTO public.user (login, password, name, email, phone) VALUES ('"+login+"', '"+password+"'", '"+name+"'", '"+email+"'", '"+phone+"')")  , (err, res) => {
+            done()
+        });
+    });
+}
+
 function savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experience,locationx,locationy){
     pg.connect(conString, function(err, client,done) {
       if (err) throw err;
@@ -168,6 +177,15 @@ io.on('connection', function (socket)
             tryLoggin(socket,msg.login,msg.password);
         }else{
             socket.emit('logged',{result:'validation error - please just letters or numbers'});
+        }
+    });
+    
+    socket.on('registerPlayer', function (msg)
+    {
+        if(isValidString(msg.login)&&isValidString(msg.password)&&isValidString(msg.email)&&isValidString(msg.phone)&&isValidString(msg.name)){
+            tryRegisterPlayer(socket,msg.login,msg.password,msg.name,msg.email,msg.phone);
+        }else{
+            socket.emit('registerPlayer',{result:'validation error - please just letters or numbers'});
         }
     });
 
