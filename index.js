@@ -29,7 +29,8 @@ function tryLoggin(socket,userName,password){
 function tryRegisterPlayer(socket,login,password,name,email,phone){
     pg.connect(conString, function(err, client,done) {
       if (err) throw err;
-        const query = client.query("INSERT INTO public.user (login, password, name, email, phone) VALUES ('"+login+"', '"+password+"', '"+name+"', '"+email+"', '"+phone+"')" , (err, res) => {
+        const query = client.query("INSERT INTO public.user (\"login\", \"password\", \"name\", \"email\", \"phone\") VALUES ('"+login+"', '"+password+"', '"+name+"', '"+email+"', '"+phone+"')" , (err, res) => {
+            console.log(query);
             responseRegisterPlayer(socket,true);
             done()
         });
