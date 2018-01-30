@@ -26,10 +26,10 @@ function tryLoggin(socket,userName,password){
         });
     });
 }
-function tryRegisterPlayer(socket,login,password,name,email,phone){
+function tryRegisterPlayer(socket,login,password,name,email,phone,level,attack,defence,experience,maxlifepoinst,locationx,locationy){
     pg.connect(conString, function(err, client,done) {
       if (err) throw err;
-        const query = client.query("INSERT INTO public.user (\"login\", \"password\", \"name\", \"email\", \"phone\") VALUES ('"+login+"', '"+password+"', '"+name+"', '"+email+"', '"+phone+"')" , (err, res) => {
+        const query = client.query("INSERT INTO public.user (\"login\", \"password\", \"name\", \"email\", \"phone\", \"level\", \"atack\", \"defence\", \"experience\", \"maxlifepoinst\", \"locationx\", \"locationy\") VALUES ('"+login+"', '"+password+"', '"+name+"', '"+email+"', '"+phone+"', '"+level+"', '"+attack+"', '"+defence+"', '"+experience+"', '"+maxlifepoinst+"', '"+locationx+"', '"+locationy+"')" , (err, res) => {
             console.log(query);
             responseRegisterPlayer(socket,true);
             done()
@@ -190,7 +190,7 @@ io.on('connection', function (socket)
     {
         console.log(msg);
         if(isValidString(msg.login)&&isValidString(msg.password)&&validateEmail(msg.email)&&isValidString(msg.phone)&&isValidString(msg.name)){
-            tryRegisterPlayer(socket,msg.login,msg.password,msg.name,msg.email,msg.phone);
+            tryRegisterPlayer(socket,msg.login,msg.password,msg.name,msg.email,msg.phone,msg.level,msg.attack,msg.defence,msg.experience,msg.maxlifepoinst,msg.locationx,msg.locationy);
         }else{
             socket.emit('registredPlayer',{result:'validation error - please just letters or numbers'});
         }
