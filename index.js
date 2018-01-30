@@ -63,6 +63,10 @@ function loadPlayerData(socket,login){
 
 
 function isValidString(str) { return /^\w+$/.test(str); }
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 
 class room {
     constructor(roomId, roomName, userList) {
@@ -185,7 +189,7 @@ io.on('connection', function (socket)
     socket.on('registerPlayer', function (msg)
     {
         console.log(msg);
-        if(isValidString(msg.login)&&isValidString(msg.password)&&isValidString(msg.email)&&isValidString(msg.phone)&&isValidString(msg.name)){
+        if(isValidString(msg.login)&&isValidString(msg.password)&&validateEmail(msg.email)&&isValidString(msg.phone)&&isValidString(msg.name)){
             tryRegisterPlayer(socket,msg.login,msg.password,msg.name,msg.email,msg.phone);
         }else{
             socket.emit('registredPlayer',{result:'validation error - please just letters or numbers'});
