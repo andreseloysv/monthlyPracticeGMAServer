@@ -184,6 +184,7 @@ io.on('connection', function (socket)
     
     socket.on('registerPlayer', function (msg)
     {
+        console.log(msg);
         if(isValidString(msg.login)&&isValidString(msg.password)&&isValidString(msg.email)&&isValidString(msg.phone)&&isValidString(msg.name)){
             tryRegisterPlayer(socket,msg.login,msg.password,msg.name,msg.email,msg.phone);
         }else{
