@@ -186,7 +186,7 @@ io.on('connection', function (socket)
         if(isValidString(msg.login)&&isValidString(msg.password)&&isValidString(msg.email)&&isValidString(msg.phone)&&isValidString(msg.name)){
             tryRegisterPlayer(socket,msg.login,msg.password,msg.name,msg.email,msg.phone);
         }else{
-            socket.emit('registerPlayer',{result:'validation error - please just letters or numbers'});
+            socket.emit('registredPlayer',{result:'validation error - please just letters or numbers'});
         }
     });
 
