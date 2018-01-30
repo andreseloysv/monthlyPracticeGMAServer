@@ -29,7 +29,7 @@ function tryLoggin(socket,userName,password){
 function tryRegisterPlayer(socket,login,password,name,email,phone,level,attack,defence,experience,maxlifepoinst,locationx,locationy){
     pg.connect(conString, function(err, client,done) {
       if (err) throw err;
-        const query = client.query("INSERT INTO public.user (\"login\", \"password\", \"name\", \"email\", \"phone\", \"level\", \"atack\", \"defence\", \"experience\", \"maxlifepoinst\", \"locationx\", \"locationy\") VALUES ('"+login+"', '"+password+"', '"+name+"', '"+email+"', '"+phone+"', '"+level+"', '"+attack+"', '"+defence+"', '"+experience+"', '"+maxlifepoinst+"', '"+locationx+"', '"+locationy+"')" , (err, res) => {
+        const query = client.query("INSERT INTO public.user (\"login\", \"password\", \"name\", \"email\", \"phone\", \"level\", \"attack\", \"defence\", \"experience\", \"maxlifepoinst\", \"locationx\", \"locationy\") VALUES ('"+login+"', '"+password+"', '"+name+"', '"+email+"', '"+phone+"', '"+level+"', '"+attack+"', '"+defence+"', '"+experience+"', '"+maxlifepoinst+"', '"+locationx+"', '"+locationy+"')" , (err, res) => {
             console.log(query);
             responseRegisterPlayer(socket,true);
             done()
