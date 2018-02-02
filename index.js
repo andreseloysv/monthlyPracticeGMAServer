@@ -26,6 +26,34 @@ function tryLoggin(socket,userName,password){
         });
     });
 }
+function getEnemysCloseToPlayer(socket, locationx, locationy){
+    pg.connect(conString, function(err, client,done) {
+        if (err) throw err;
+            const query = client.query("SELECT * FROM public.enemy WHERE ST_DWithin(location, ST_MakePoint("+locationy+","+locationx+")::geography, 1400);", (err, res) => {
+                console.log(res.rows.length);
+                if(res.rows.length === 1){
+                    loadedCloasedEnemys(socket,true,query,res.rows);
+                }else{
+                    loadedCloasedEnemys(socket,false,query,null);
+                }
+                done()
+          });
+      });
+}
+function getPlayersCloseToPlayer(socket, locationx, locationy){
+    pg.connect(conString, function(err, client,done) {
+        if (err) throw err;
+            const query = client.query("SELECT * FROM public.user WHERE ST_DWithin(location, ST_MakePoint("+locationy+","+locationx+")::geography, 1400);", (err, res) => {
+                console.log(res.rows.length);
+                if(res.rows.length === 1){
+                loadedCloasedUsers(socket,true,query,res.rows);
+                }else{
+                loadedCloasedUsers(socket,false,query,null);
+                }
+                done()
+          });
+      });
+}
 function tryRegisterPlayer(socket,login,password,name,email,phone,level,attack,defence,experience,maxlifepoinst,locationx,locationy){
     pg.connect(conString, function(err, client,done) {
       if (err) throw err;
@@ -212,6 +240,22 @@ io.on('connection', function (socket)
             socket.emit('recivePlayerData',{result:'validation error - please just letters or numbers'});
         }
     });
+    socket.on('loadEnemysCloseToPlayer', function (msg)
+    {
+        if(isValidString(msg.login)){
+            getEnemysCloseToPlayer(socket, msg.locationx, msg.locationy)
+        }else{
+            socket.emit('loadedCloasedEnemys',{result:'validation error - please just letters or numbers'});
+        }
+    });
+    socket.on('loadPlayersCloseToPlayer', function (msg)
+    {
+        if(isValidString(msg.login)){
+            getPlayersCloseToPlayer(socket, msg.locationx, msg.locationy)
+        }else{
+            socket.emit('loadedCloasedUsers',{result:'validation error - please just letters or numbers'});
+        }
+    });
 
 });
 io.attach(process.env.PORT || 5000);
@@ -250,5 +294,19 @@ function loadedPlayerData(socket,result,query,data){
         socket.emit('recivePlayerData', {result:'Error: wrong argumenten'});
     }       
 }
-
-
+function loadedCloasedEnemys(socket,result,query,data){
+    if(result){
+        socket.emit('loadedCloasedEnemys', {result:'succesful',data:data});
+    }
+    else{
+        socket.emit('loadedCloasedEnemys', {result:'Error: wrong argumenten'});
+    }       
+}
+function loadedCloasedUsers(socket,result,query,data){
+    if(result){
+        socket.emit('loadedCloasedUsers', {result:'succesful',data:data});
+    }
+    else{
+        socket.emit('loadedCloasedUsers', {result:'Error: wrong argumenten'});
+    }       
+}
