@@ -29,7 +29,7 @@ function tryLoggin(socket,userName,password){
 function getEnemysCloseToPlayer(socket, locationx, locationy){
     pg.connect(conString, function(err, client,done) {
         if (err) throw err;
-            const query = client.query("SELECT * FROM public.enemy WHERE ST_DWithin(location, ST_MakePoint("+locationy+","+locationx+")::geography, 1400);", (err, res) => {
+            const query = client.query("SELECT * FROM public.enemy WHERE ST_DWithin(location, ST_MakePoint("+locationy+","+locationx+")::geography, 1400)", (err, res) => {
                 console.log(res);
                 done()
                 return true;
@@ -68,10 +68,10 @@ function tryRegisterPlayer(socket,login,password,name,email,phone,level,attack,d
     });
 }
 
-function savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experience,locationx,locationy){
+function savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experience,currentLevelUpExtraPoints,locationx,locationy){
     pg.connect(conString, function(err, client,done) {
       if (err) throw err;
-        const query = client.query("UPDATE public.user SET name='"+name+"',level='"+level+"', maxlifepoinst='"+maxLifePoinst+"', attack='"+attack+"', defence='"+defence+"', experience='"+experience+"', locationx='"+locationx+"', locationy='"+locationy+"' WHERE login='"+login+"'", (err, res) => {
+        const query = client.query("UPDATE public.user SET name='"+name+"',level='"+level+"', maxlifepoinst='"+maxLifePoinst+"', attack='"+attack+"', defence='"+defence+"', experience='"+experience+"', currentLevelUpExtraPoints='"+currentLevelUpExtraPoints +"', locationx='"+locationx+"', locationy='"+locationy+"' WHERE login='"+login+"'", (err, res) => {
             reponsePlayerUpdate(socket,true,query);
             done()
         });
@@ -229,8 +229,8 @@ io.on('connection', function (socket)
 
     socket.on('savePlayer', function (msg)
     {
-        if(isValidString(msg.login)&&isValidString(msg.name)&&isValidString(msg.level)&&isValidString(msg.maxLifePoinst)&&isValidString(msg.attack)&&isValidString(msg.defence)&&isValidString(msg.experience)&&isValidString(msg.locationx)&&isValidString(msg.locationy)){
-            savePlayer(socket,msg.login,msg.name,msg.level,msg.maxLifePoinst,msg.attack,msg.defence,msg.experience,msg.locationx,msg.locationy)
+        if(isValidString(msg.login)&&isValidString(msg.name)&&isValidString(msg.level)&&isValidString(msg.maxLifePoinst)&&isValidString(msg.attack)&&isValidString(msg.defence)&&isValidString(msg.experience)&&isValidString(msg.currentLevelUpExtraPoints)&&isValidString(msg.locationx)&&isValidString(msg.locationy)){
+            savePlayer(socket,msg.login,msg.name,msg.level,msg.maxLifePoinst,msg.attack,msg.defence,msg.experience,msg.currentLevelUpExtraPoints,msg.locationx,msg.locationy)
         }else{
             socket.emit('savedPlayer',{result:'validation error - please just letters or numbers'});
         }
