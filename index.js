@@ -31,6 +31,8 @@ function getEnemysCloseToPlayer(socket, locationx, locationy){
         if (err) throw err;
             const query = client.query("SELECT * FROM public.enemy WHERE ST_DWithin(location, ST_MakePoint("+locationy+","+locationx+")::geography, 1400);", (err, res) => {
                 console.log(res);
+                done()
+                return true;
                 //console.log(res.rows.length);
                 if(res.rows.length === 1){
                     loadedCloasedEnemys(socket,true,query,res.rows);
