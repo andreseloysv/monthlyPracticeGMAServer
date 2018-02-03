@@ -242,11 +242,7 @@ io.on('connection', function (socket)
     });
     socket.on('loadEnemysCloseToPlayer', function (msg)
     {
-        if(isValidString(msg.login)){
-            getEnemysCloseToPlayer(socket, msg.locationx, msg.locationy)
-        }else{
-            socket.emit('loadedCloasedEnemys',{result:'validation error - please just letters or numbers'});
-        }
+        getEnemysCloseToPlayer(socket, msg.locationx, msg.locationy)
     });
     socket.on('loadPlayersCloseToPlayer', function (msg)
     {
