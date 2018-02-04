@@ -68,10 +68,10 @@ function tryRegisterPlayer(socket,login,password,name,email,phone,level,attack,d
     });
 }
 
-function savePlayer(socket,login,name,level,maxLifePoinst,attack,defence,experience,currentLevelUpExtraPoints,locationx,locationy){
+function savePlayer(socket,login,name,level,lifepoinst,maxLifePoinst,attack,defence,experience,currentLevelUpExtraPoints,locationx,locationy){
     pg.connect(conString, function(err, client,done) {
       if (err) throw err;
-        const query = client.query("UPDATE public.user SET name='"+name+"',level='"+level+"', maxlifepoinst='"+maxLifePoinst+"', attack='"+attack+"', defence='"+defence+"', experience='"+experience+"', currentlevelupextrapoints='"+currentLevelUpExtraPoints +"', locationx='"+locationx+"', locationy='"+locationy+"' WHERE login='"+login+"'", (err, res) => {
+        const query = client.query("UPDATE public.user SET name='"+name+"',level='"+level+"', lifepoinst='"+lifepoinst+"', maxlifepoinst='"+maxLifePoinst+"', attack='"+attack+"', defence='"+defence+"', experience='"+experience+"', currentlevelupextrapoints='"+currentLevelUpExtraPoints +"', locationx='"+locationx+"', locationy='"+locationy+"' WHERE login='"+login+"'", (err, res) => {
             reponsePlayerUpdate(socket,true,query);
             done()
         });
